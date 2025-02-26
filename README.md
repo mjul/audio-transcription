@@ -1,12 +1,19 @@
 # audio-transcription
+
 Generate transcripts for audio files
 
+# Usage
+
+Set the environment variable `GOOGLE_API_KEY` with your Google Gemini API key before running.
+
+# Development Notes
 
 ## Windows Development Setup
 
 You need to install git, Python and uv to use this project.
 
 Use an Administrator PowerShell to check that git and python are installed or install them:
+
 ```powershell
     winget install Git.Git
     python
@@ -16,6 +23,7 @@ Use an Administrator PowerShell to check that git and python are installed or in
 Restart the terminal after installing the packages to refresh the environment.
 
 Create the virtual environment
+
 ```powershell
     uv venv --python=python3.12
 ```
