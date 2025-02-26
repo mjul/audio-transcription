@@ -17,10 +17,12 @@ Restart the terminal after installing the packages to refresh the environment.
 
 Create the virtual environment
 ```powershell
-  uv venv --python=python3.12
+    uv venv --python=python3.12
 ```
 
-Activate the virtual environment
+Activate the virtual environment (first line only if needed)
+
 ```powershell
-  .venv\Scripts\activate
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+    .venv\Scripts\activate
 ```
