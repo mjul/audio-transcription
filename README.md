@@ -4,10 +4,27 @@ Generate transcripts for audio files
 
 ## Windows Development Setup
 
-To set up your Windows development environment for this project, you can use the provided PowerShell script in the `scripts` directory:
+You need to install git, Python and uv to use this project.
 
+Use an Administrator PowerShell to check that git and python are installed or install them:
 ```powershell
-.\scripts\setup_windows_dev.ps1
+    winget install Git.Git
+    python
 ```
 
-This script will install git, Python and `uv`.
+Restart the terminal after installing the packages to refresh the environment.
+
+Install uv for the current user:
+```powershell
+  pip install uv
+```
+
+Create the virtual environment
+```powershell
+  uv venv --python=python3.12
+```
+
+Activate the virtual environment
+```powershell
+  source .venv\Scripts\activate
+```
