@@ -34,3 +34,6 @@ Activate the virtual environment (first line only if needed)
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
     .venv\Scripts\activate
 ```
+
+# Attributions 
+- <https://commons.wikimedia.org/wiki/File:Linus_pronounces_linux_(english).oga>
