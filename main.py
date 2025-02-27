@@ -7,10 +7,9 @@ from google import genai
 LINUS_AUDIO_FILE = Path('media') / 'Linus_pronounces_linux_(english).ogg'
 TRANSCRIBE_PROMPT = 'Generate a transcript of the speech.'
 
-def transcribe_audio(input_file: Path):
+def transcribe_audio(input_file: Path, api_key: str):
     assert input_file.exists(), f"File {input_file} does not exist."
-    # This uses the API key from environment variable GOOGLE_API_KEY
-    client = genai.Client()
+    client = genai.Client(api_key=api_key)
 
     logging.debug(f"# Uploading file: {input_file}...")
     audio_file = client.files.upload(file=input_file)
@@ -37,6 +36,13 @@ def main():
         action="store_true",
         help="Increase output verbosity"
     )
+    parser.add_argument(
+        "--google-api-key",
+        type=str,
+        default=os.environ.get("GOOGLE_API_KEY"),
+        help=("Google API key to use. "
+              "If not specified, the key is read from the GOOGLE_API_KEY environment variable.")
+    )
     args = parser.parse_args()
 
     # Convert the provided file path to a Path object
@@ -49,7 +55,7 @@ def main():
         format="%(asctime)s [%(process)d] %(levelname)s - %(message)s"
     )
 
-    transcription = transcribe_audio(audio_path)
+    transcription = transcribe_audio(audio_path, args.google_api_key)
 
     print(transcription)
 
