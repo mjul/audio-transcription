@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-from moviepy import AudioFileClip
+from moviepy import AudioFileClip, VideoFileClip
 
 
 def positive_int(value: str) -> int:
@@ -29,13 +29,33 @@ def output_file(file: str) -> Path:
     return path
 
 
+def is_video_file(filepath: Path) -> bool:
+    try:
+        with VideoFileClip(filepath) as clip:
+            # Check if the clip has a nonzero width and height
+            # (which indicates that there’s a video stream)
+            return clip.w > 0 and clip.h > 0
+    except Exception:
+        # If an exception occurs, it may not be a video file.
+        return False
+
+
 def create_snippet(input: Path, output: Path, duration: int):
     assert duration > 0, "Duration must be a positive integer."
-    with AudioFileClip(input) as audio:
-        start = 0
-        end = min(audio.duration, duration)
-        audio_snippet = audio.subclipped(start, end)
-        audio_snippet.write_audiofile(output)
+    if is_video_file(input):
+        print("Input file is a video file. Extracting audio snippet...")
+        with VideoFileClip(input) as video:
+            start = 0
+            end = min(video.duration, duration)
+            audio_snippet = video.audio.subclipped(start, end)
+            audio_snippet.write_audiofile(output)
+    else:
+        print("Input file is an audio file. Extracting audio snippet...")
+        with AudioFileClip(input) as audio:
+            start = 0
+            end = min(audio.duration, duration)
+            audio_snippet = audio.subclipped(start, end)
+            audio_snippet.write_audiofile(output)
 
 
 def main():
