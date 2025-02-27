@@ -7,8 +7,11 @@ from google import genai
 LINUS_AUDIO_FILE = Path('media') / 'Linus_pronounces_linux_(english).ogg'
 TRANSCRIBE_PROMPT = 'Generate a transcript of the speech.'
 
-def transcribe_audio(input_file: Path, api_key: str):
+
+def transcribe_audio(input_file: Path, api_key: str, duration: int):
     assert input_file.exists(), f"File {input_file} does not exist."
+    assert duration > 0, "Duration must be a positive integer."
+
     client = genai.Client(api_key=api_key)
 
     logging.debug(f"# Uploading file: {input_file}...")
@@ -17,9 +20,18 @@ def transcribe_audio(input_file: Path, api_key: str):
     logging.debug("# Analysing file...")
     response = client.models.generate_content(
         model="gemini-2.0-flash-exp",
-        contents=[TRANSCRIBE_PROMPT, audio_file]
+        contents=[
+            f"Provide a transcript of the speech from 0:00 and the next {duration} seconds."
+            , audio_file]
     )
     return response.text
+
+
+def positive_int(value: str) -> int:
+    int_value = int(value)
+    if int_value <= 0:
+        raise argparse.ArgumentTypeError("Duration must be a positive integer")
+    return int_value
 
 
 def main():
@@ -43,6 +55,12 @@ def main():
         help=("Google API key to use. "
               "If not specified, the key is read from the GOOGLE_API_KEY environment variable.")
     )
+    parser.add_argument(
+        "--duration",
+        type=positive_int,
+        default=10,
+        help="Duration to transcribe in seconds (positive integer, default: 10)"
+    )
     args = parser.parse_args()
 
     # Convert the provided file path to a Path object
@@ -55,7 +73,7 @@ def main():
         format="%(asctime)s [%(process)d] %(levelname)s - %(message)s"
     )
 
-    transcription = transcribe_audio(audio_path, args.google_api_key)
+    transcription = transcribe_audio(audio_path, args.google_api_key, args.duration)
 
     print(transcription)
 
