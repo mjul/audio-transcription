@@ -6,6 +6,10 @@ Generate transcripts for audio files
 
 Set the environment variable `GOOGLE_API_KEY` with your Google Gemini API key before running.
 
+```powershell
+   python --verbose --file "media\Linus_pronounces_linux_(english).ogg"
+```
+
 # Development Notes
 
 ## Windows Development Setup
@@ -35,5 +39,6 @@ Activate the virtual environment (first line only if needed)
     .venv\Scripts\activate
 ```
 
-# Attributions 
+# Attributions
+
 - <https://commons.wikimedia.org/wiki/File:Linus_pronounces_linux_(english).oga>
