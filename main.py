@@ -8,6 +8,7 @@ LINUS_AUDIO_FILE = Path('media') / 'Linus_pronounces_linux_(english).ogg'
 TRANSCRIBE_PROMPT = 'Generate a transcript of the speech.'
 
 def transcribe_audio(input_file: Path):
+    assert input_file.exists(), f"File {input_file} does not exist."
     # This uses the API key from environment variable GOOGLE_API_KEY
     client = genai.Client()
 
