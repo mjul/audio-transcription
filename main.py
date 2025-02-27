@@ -21,7 +21,8 @@ def transcribe_audio(input_file: Path, api_key: str, duration: int):
     response = client.models.generate_content(
         model="gemini-2.0-flash-exp",
         contents=[
-            f"Provide a transcript of the speech from 0:00 and the next {duration} seconds."
+            f"Provide a transcript of the speech from 00:00:00 and the next {duration} seconds. "
+            f"Add timestamps for each line."
             , audio_file]
     )
     return response.text
